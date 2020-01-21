@@ -13,16 +13,33 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
+
+        <TextView
+            android:id="@+id/tvLabelPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password:" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+
         <TextView
             android:id="@+id/tvLabelSecretNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Your secret note:" />
 
+
         <EditText
             android:id="@+id/etSecretNote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="307dp"
+            android:layout_height="138dp"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
@@ -32,7 +49,13 @@
             android:id="@+id/btnSaveNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save note" />
+            android:text="SAVE CHANGES" />
+
+        <Button
+            android:id="@+id/btnGoToSecondActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="RETURN" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
