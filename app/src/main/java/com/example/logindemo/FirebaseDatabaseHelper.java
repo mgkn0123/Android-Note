@@ -16,13 +16,13 @@ public class FirebaseDatabaseHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceNotes;
     private List<Note> notes = new ArrayList<>();
+
     public interface DataStatus{
         void DataIsLoaded(List<Note> notes, List<String> keys);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
     }
-
 
     public FirebaseDatabaseHelper() {
         mDatabase = FirebaseDatabase.getInstance();

@@ -17,6 +17,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.util.Log;
+
+import com.google.firebase.database.core.Tag;
+
 public class NoteActivity extends AppCompatActivity {
     private EditText newSecretNote;
     private Button save;
@@ -27,7 +31,8 @@ public class NoteActivity extends AppCompatActivity {
     private EditText password;
 
     private DatabaseReference mDatabase;
-    Note note = new Note();
+
+    private static final String TAG = "NoteActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,24 +43,27 @@ public class NoteActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.etPassword);
         save = findViewById(R.id.btnSaveNote);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
 
-
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("note");
 
         newSecretNote = findViewById(R.id.etSecretNote);
-      //  newSecretNote.setText(note.getContent());
-      //  newSecretNote.setText("pppp");
-
-// ...
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-      // String content =  mDatabase.child("note").child("content").toString();
-        String content =  firebaseDatabase.getReference().getRoot().child("note").child("content").toString();
 
 
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue(String.class);
+                newSecretNote.setText(value);
+                Log.d(TAG, "Value is: " + value);
+            }
 
-        newSecretNote.setText(content);
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -65,11 +73,10 @@ public class NoteActivity extends AppCompatActivity {
 
                 // TODO: CHANGE NOTE WITH AES
                 newSecretNote = findViewById(R.id.etSecretNote);
-                note.setContent(newSecretNote.getText().toString());
-                myRef.setValue(note);
+
+                // save to database
+                myRef.setValue(newSecretNote.getText().toString());
                 Toast.makeText(NoteActivity.this, "Changed", Toast.LENGTH_SHORT).show();
-
-
             }
         });
 
