@@ -1,9 +1,11 @@
 package com.example.logindemo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,16 +23,13 @@ import android.util.Log;
 
 import com.google.firebase.database.core.Tag;
 
+
 public class NoteActivity extends AppCompatActivity {
     private EditText newSecretNote;
     private Button save;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private Button btnGoToSecondActivity;
-
-    private DatabaseReference mDatabase;
-
     private static final String TAG = "NoteActivity";
+    private EncryptionDecryption encryptionDecryption = new EncryptionDecryption();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +51,18 @@ public class NoteActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.getValue(String.class);
-                newSecretNote.setText(value);
 
-                /*
-                // show password from global variable
                 NoteApplication app = (NoteApplication) getApplication();
-                newSecretNote.setText(app.getUserPassword());
-                */
+                String userPassword = app.getUserPassword();
+
+                String decryptionCode = "";
+                try {
+                    decryptionCode = encryptionDecryption.decrypt(userPassword, value);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                newSecretNote.setText(decryptionCode);
 
                 Log.d(TAG, "Value is: " + value);
             }
@@ -71,15 +75,25 @@ public class NoteActivity extends AppCompatActivity {
 
 
         save.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                // TODO: CHECK PASSWORD
-
-                // TODO: CHANGE NOTE WITH AES
                 newSecretNote = findViewById(R.id.etSecretNote);
+                String originalString = newSecretNote.getText().toString();
+
+                NoteApplication app = (NoteApplication) getApplication();
+                String userPassword = app.getUserPassword();
+
+                // Change note
+                String encryptionCode = "";
+                try {
+                    encryptionCode = encryptionDecryption.encrypt(userPassword, originalString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 // save to database
-                myRef.setValue(newSecretNote.getText().toString());
+                myRef.setValue(encryptionCode);
                 Toast.makeText(NoteActivity.this, "Changed", Toast.LENGTH_SHORT).show();
             }
         });
