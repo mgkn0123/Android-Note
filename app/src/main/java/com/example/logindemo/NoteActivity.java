@@ -28,8 +28,6 @@ public class NoteActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private Button btnGoToSecondActivity;
 
-    private EditText password;
-
     private DatabaseReference mDatabase;
 
     private static final String TAG = "NoteActivity";
@@ -40,7 +38,6 @@ public class NoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note);
 
         btnGoToSecondActivity = (Button) findViewById(R.id.btnGoToSecondActivity);
-        password = (EditText) findViewById(R.id.etPassword);
         save = findViewById(R.id.btnSaveNote);
 
 
@@ -56,6 +53,13 @@ public class NoteActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.getValue(String.class);
                 newSecretNote.setText(value);
+
+                /*
+                // show password from global variable
+                NoteApplication app = (NoteApplication) getApplication();
+                newSecretNote.setText(app.getUserPassword());
+                */
+
                 Log.d(TAG, "Value is: " + value);
             }
 

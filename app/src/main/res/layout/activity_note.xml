@@ -15,21 +15,6 @@
 
 
         <TextView
-            android:id="@+id/tvLabelPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password:" />
-
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword" />
-
-
-        <TextView
             android:id="@+id/tvLabelSecretNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

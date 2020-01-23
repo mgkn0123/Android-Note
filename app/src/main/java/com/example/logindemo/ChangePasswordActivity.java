@@ -73,6 +73,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+
+                                                NoteApplication app = (NoteApplication) getApplication();
+                                                app.setUserPassword(etNewPassword.getText().toString());
+
                                                 Toast.makeText(ChangePasswordActivity.this, "Changed", Toast.LENGTH_SHORT).show();
                                                 // TODO: save note by new key
 
